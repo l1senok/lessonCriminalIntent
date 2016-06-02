@@ -1,7 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +14,7 @@ import android.widget.EditText;
 
 /**
  * Created by alice on 31.05.16.
+ *
  */
 public class CrimeFragment extends Fragment{
     private Crime mCrime;
@@ -29,7 +29,7 @@ public class CrimeFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //заполняется макет представления фрагмента, заполненный объект view возвращается хосту
         View v = inflater.inflate(R.layout.fragment_crime,container,false);
 
@@ -40,7 +40,6 @@ public class CrimeFragment extends Fragment{
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //????????????}
-
             }
 
             @Override
