@@ -22,7 +22,7 @@ public class CrimeListFragment extends Fragment{
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
 
-    public static final int REQUEST_CRIME = 1;
+    //public static final int REQUEST_CRIME = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,17 +90,18 @@ public class CrimeListFragment extends Fragment{
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
             //для возвращения результата
-            startActivityForResult(intent, REQUEST_CRIME);
+            //startActivityForResult(intent, REQUEST_CRIME);
         }
     }
 
     //для возвращения результата
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CRIME) {
             //Обработка результата
         }
     }
+    */
 
     //Adapter
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
