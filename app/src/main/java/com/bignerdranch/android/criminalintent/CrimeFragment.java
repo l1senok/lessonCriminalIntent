@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -12,20 +13,36 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 /**
  * Created by alice on 31.05.16.
  *
  */
 public class CrimeFragment extends Fragment{
+
+    private static final String ARG_CRIME_ID = "crime_id";
+
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
 
+    public static CrimeFragment newInstance(UUID crimeId) {
+        //создает пакет аргументов, создает экземпляр фрагмента, после присоединяет аргументы к фрагменту
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID,crimeId);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrime = new Crime();
+        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 
     @Override
@@ -33,8 +50,9 @@ public class CrimeFragment extends Fragment{
         //заполняется макет представления фрагмента, заполненный объект view возвращается хосту
         View v = inflater.inflate(R.layout.fragment_crime,container,false);
 
-        //получение назания преступления
+        //получение назания преступления и его вывод
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
+        mTitleField.setText(mCrime.getTitle());
         //Cлушатель для получения названия
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -58,7 +76,9 @@ public class CrimeFragment extends Fragment{
         //блокировка нажатия(поменяется и оформление)
         mDateButton.setEnabled(false);
 
+        //Статус раскрытия и его вывод
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setChecked(mCrime.isSolved());
         //слушатель на CheckBox
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -70,5 +90,9 @@ public class CrimeFragment extends Fragment{
 
 
         return v;
+    }
+    //для возвращения результата
+    public void returnResult(){
+        getActivity().setResult(Activity.RESULT_OK, null);
     }
 }

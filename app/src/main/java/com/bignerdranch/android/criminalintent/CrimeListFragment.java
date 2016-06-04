@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,6 +21,8 @@ public class CrimeListFragment extends Fragment{
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+
+    public static final int REQUEST_CRIME = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,11 +37,24 @@ public class CrimeListFragment extends Fragment{
         return view;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //для сохранения изменений
+        updateUI();
+    }
+
     private void updateUI(){
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        }else {
+            //для сохранения изменений
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     //ViewHolder
@@ -71,8 +86,19 @@ public class CrimeListFragment extends Fragment{
 
         @Override
         public void onClick(View v) {
-            //Высвечивание сообщения в случай нажатия на элемент списка
-            Toast.makeText(getActivity(),mCrime.getTitle() + " clicled!", Toast.LENGTH_SHORT).show();
+            //
+            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            startActivity(intent);
+            //для возвращения результата
+            startActivityForResult(intent, REQUEST_CRIME);
+        }
+    }
+
+    //для возвращения результата
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CRIME) {
+            //Обработка результата
         }
     }
 
