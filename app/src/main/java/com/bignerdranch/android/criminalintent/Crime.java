@@ -11,13 +11,15 @@ import java.util.UUID;
  *
  */
 public class Crime {
+
     private UUID mId;
-    private String mTitle;      //название преступления
-    private Date mDate;         //Дата
-    private boolean mSolved;    //Статус(раскрыто или нет)
+    private String mTitle;
+    private Date mDate;
+    private boolean mSolved;
 
 
     public Crime() {
+        //mId = UUID.randomUUID();
         // Генерирование уникального идентификатора
         mId = UUID.randomUUID();
         //По умолчанию присваивает текущую дату
